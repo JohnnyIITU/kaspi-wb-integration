@@ -14,3 +14,4 @@ use App\Http\Controllers\UploadController;
 */
 
 Route::post('upload/{company}', [UploadController::class, 'upload']);
+Route::get('price/{company}', [UploadController::class, 'price']);
