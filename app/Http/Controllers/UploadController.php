@@ -22,7 +22,10 @@ class UploadController extends Controller
             throw new BadRequestHttpException();
         }
         $xml = $request->get('xml');
-        $fileName = strtolower($company) . '.xml';
+        $fileName = "kaspi/files/".strtolower($company) . '.xml';
+        if (Storage::disk('local')->exists($fileName)) {
+            Storage::delete($fileName);
+        }
         Storage::put($fileName, $xml);
         return response()->json([
             'success' => true,
@@ -31,7 +34,7 @@ class UploadController extends Controller
 
     public function price($company) {
         $this->checkCompanyExist($company);
-        $fileName = strtolower($company) . '.xml';
+        $fileName = "kaspi/files/".strtolower($company) . '.xml';
         $file = Storage::get($fileName);
         return response()->file($file);
     }
@@ -44,7 +47,7 @@ class UploadController extends Controller
     private function checkCompanyExist($company) : void
     {
         $item = Company::query()
-            ->where('company_id', $company)
+            ->where('company', $company)
             ->first();
         if ($item === null) {
             throw new NotFoundHttpException();
