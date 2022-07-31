@@ -36,8 +36,7 @@ class UploadController extends Controller
         $this->checkCompanyExist($company);
         $fileName = "kaspi/files/".strtolower($company) . '.xml';
         if (Storage::disk('local')->exists($fileName)) {
-            $file = Storage::disk('local')->get($fileName);
-            return response()->file($file);
+            return response()->file(storage_path("app/".$fileName));
         }
         return [
             'success' => false
