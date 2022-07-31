@@ -35,8 +35,13 @@ class UploadController extends Controller
     public function price($company) {
         $this->checkCompanyExist($company);
         $fileName = "kaspi/files/".strtolower($company) . '.xml';
-        $file = Storage::get($fileName);
-        return response()->file($file);
+        if (Storage::disk('local')->exists($fileName)) {
+            $file = Storage::disk('local')->get($fileName);
+            return response()->file($file);
+        }
+        return [
+            'success' => false
+        ];
     }
 
     /**
